@@ -1,0 +1,25 @@
+pipeline {
+  agent any
+  stages {
+    stage('Checkout') {
+      steps { git 'https://github.com/your-org/habbitt-website.git' }
+    }
+    stage('Build') {
+      steps {
+        dir('apps/frontend') {
+          sh 'npm ci && npm run build'
+        }
+      }
+    }
+    stage('Dockerize') {
+      steps {
+        sh 'docker build -t habbitt/frontend .'
+      }
+    }
+    stage('Deploy') {
+      steps {
+        echo 'Deploying locally or to server...'
+      }
+    }
+  }
+}
